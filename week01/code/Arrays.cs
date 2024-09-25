@@ -8,12 +8,23 @@ public static class Arrays
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        //create a new array of doubles w the size of "length"
+        //the array will hold multiples of the number
+        double[] multiplesArray = new double[length];
 
-        return []; // replace this return statement with your own
+        //use a loop to fill the array
+        //interate from 0 to length to populate each element
+        for (int i = 0; i < length; i++)
+        {
+            //valculate the value from each position
+            // 1st element is "number" and the 2nd is "number*2" and so on
+            //(i + 1) is used to ensure that the first multiple corresponds to be "number" itself 
+            multiplesArray[i] = number * (i + 1);
+        }
+
+        //return the filled array. 
+        //after the loop, the return variable will contain multiples of the giving #
+        return multiplesArray; 
     }
 
     /// <summary>
