@@ -1,3 +1,5 @@
+using System.Collections;
+
 /// <summary>
 /// This queue is circular.  When people are added via AddPerson, then they are added to the 
 /// back of the queue (per FIFO rules).  When GetNextPerson is called, the next person
@@ -9,9 +11,9 @@
 /// </summary>
 public class TakingTurnsQueue //declares the class ttq
 {
-    private readonly PersonQueue _people = new();//initialized a private field(_people) of type PersonQueue, queue for managing persons objects.
+    private readonly  Queue<Person> _people= new();//initialized a private field(_people) of type PersonQueue, queue for managing persons objects.
 
-    public int Length => _people.Length;//lenght returns the current length of the _people queue. => creates a property that returns value
+    public int Length => _people.Count;//lenght returns the current length of the _people queue. => creates a property that returns value
 
     /// <summary>
     /// Add new people to the queue with a name and number of turns
@@ -33,25 +35,31 @@ public class TakingTurnsQueue //declares the class ttq
     /// </summary>
     public Person GetNextPerson()//GetNextPerson returns a Person
     {
-        if (_people.IsEmpty())//checks if the _people queue is empty.
+        if (_people.Count == 0)//checks if the _people queue is empty.
         {
             throw new InvalidOperationException("No one in the queue.");
         }
-        else//executes if the queue is not empty
-        {
-            Person person = _people.Dequeue();//removes and retrieves the next person from the front of _people
-            if (person.Turns > 1)
-            {
-                person.Turns -= 1;
-                _people.Enqueue(person);
-            }
 
-            return person;//checks if the person has more thanone turn left
+        Person person = _people.Dequeue();//removes and retrieves the next person from the front of _people
+        if (person.Turns > 0)
+        {
+            person.Turns -= 1;
+            if (person.Turns > 0)
+            {
+            _people.Enqueue(person);
+            }
         }
+        else
+        {
+            _people.Enqueue(person);
+        }
+
+        return person;//checks if the person has more thanone turn left
+        
     }
 
     public override string ToString()//overrides the ToString method to return _people queue
     {
-        return _people.ToString();
+        return string.Join(", ", _people.Select(p => p.Name + "(" + p.Turns + ")"));
     }
 }
