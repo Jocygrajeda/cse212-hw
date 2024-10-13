@@ -22,17 +22,14 @@
             throw new InvalidOperationException("The queue is empty.");
         }
 
-        // Find the index of the item with the highest priority to remove
-        var highPriorityIndex = 0;
-        for (int index = 1; index < _queue.Count - 1; index++)
-        {
-            if (_queue[index].Priority >= _queue[highPriorityIndex].Priority)
-                highPriorityIndex = index;
-        }
+        var highestPriorityItem = _queue
+            .OrderByDescending(item => item.Priority) 
+            .ThenBy(item => _queue.IndexOf(item))
+            .First();
 
         // Remove and return the item with the highest priority
-        var value = _queue[highPriorityIndex].Value;
-        return value;
+        _queue.Remove(highestPriorityItem);
+        return highestPriorityItem.Value;
     }
 
     public override string ToString()
