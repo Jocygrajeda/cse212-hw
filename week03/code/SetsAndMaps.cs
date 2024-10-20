@@ -58,6 +58,16 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            var degree = fields[3].Trim();
+
+            if (degrees.ContainsKey(degree))
+            {
+                degrees[degree]++;
+            }
+            else
+            {
+                degrees[degree] = 1;
+            }
         }
 
         return degrees;
@@ -82,7 +92,42 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        word1 = new string(word1.ToLower().Where(c => !char.IsWhiteSpace(c)).ToArray());
+        word2 = new string(word2.ToLower().Where(c => !char.IsWhiteSpace(c)).ToArray());
+
+        if (word1.Length != word2.Length)
+        {
+            return false;
+        }
+
+        var letterCount1 = new Dictionary<char, int>();
+        var letterCount2 = new Dictionary<char, int>();
+
+        foreach(char c in word1)
+        {
+            if (letterCount1.ContainsKey(c))
+            {
+                letterCount1[c]++;
+            }
+            else
+            {
+                letterCount1[c] = 1;
+            }
+        }
+
+        foreach(char c in word1)
+        {
+            if (letterCount2.ContainsKey(c))
+            {
+                letterCount2[c]++;
+            }
+            else
+            {
+                letterCount2[c] = 1;
+            }
+        }
+
+        return letterCount1.Count == letterCount2.Count && !letterCount1.Except(letterCount2).Any();    
     }
 
     /// <summary>
@@ -110,12 +155,25 @@ public static class SetsAndMaps
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
+        var summaries = new List<string>();
+
+        foreach (var feature in featureCollection.Features)
+        {
+            if(feature.Properties.Mag.HasValue && !string.IsNullOrEmpty(feature.Properties.Place))
+            {
+                summaries.Add($"{feature.Properties.Place} - Mag {feature.Properties.Mag.Value}");
+            }
+        }
+
+        return summaries.ToArray();
+              
+
 
         // TODO Problem 5:
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+        // return [];
     }
 }
