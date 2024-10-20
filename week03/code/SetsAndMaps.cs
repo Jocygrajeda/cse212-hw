@@ -115,7 +115,7 @@ public static class SetsAndMaps
             }
         }
 
-        foreach(char c in word1)
+        foreach(char c in word2)
         {
             if (letterCount2.ContainsKey(c))
             {
