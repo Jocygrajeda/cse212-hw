@@ -51,7 +51,8 @@ public static class Recursion
 
         for (int i = 0; i < letters.Length; i++)
         {
-            PermutationsChoose(results, letters, size, word + letters[i]);
+            string remainingLetters = letters.Substring(0, i) + letters.Substring(i + 1);
+            PermutationsChoose(results, remainingLetters, size, word + letters[i]);
         }
     }
 
@@ -117,7 +118,8 @@ public static class Recursion
         if (remember.ContainsKey(s))
             return remember[s];
 
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        decimal ways = CountWaysToClimb(s - 1, remember) + CountWaysToClimb(s - 2, remember) + CountWaysToClimb(s - 3, remember);
+        remember[s] = ways;
         return ways;
     }
 
@@ -156,9 +158,9 @@ public static class Recursion
     {
         // If this is the first time running the function, then we need
         // to initialize the currPath list.
-        if (currPath == null) {
+        if (currPath == null)
             currPath = new List<ValueTuple<int, int>>();
-        }
+        
         
         // currPath.Add((1,2)); // Use this syntax to add to the current path
 
